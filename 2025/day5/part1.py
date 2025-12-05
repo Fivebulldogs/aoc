@@ -1,5 +1,3 @@
-from collections import deque
-
 def read_input():
     ranges = []
     ids = []
@@ -8,30 +6,24 @@ def read_input():
         while line:
             if "-" in line:
                 range = line.strip().split("-")
-                ranges.append((range[0], range[1]))
+                ranges.append((int(range[0]), int(range[1])))
             elif len(line) > 1:
                 ids.append(int(line.strip()))
             line = f.readline()
     return (ranges, ids)
 
-ranges = [(3, 5), (10, 14), (16, 20), (12, 18)]
-ids = [1, 5,8,11,17,32]
+def get_fresh_ids(ids, ranges):
+    fresh_ids = set()
+    for id in ids:
+        for r in ranges:
+            if id >= r[0] and id <= r[1]:
+                fresh_ids.add(id)
+    return fresh_ids
 
-# (ranges, ids) = read_input()
-# print(ranges)
-# print(ids)
+# ranges = [(3, 5), (10, 14), (16, 20), (12, 18)]
+# ids = [1, 5,8,11,17,32]
 
-def merge_ranges(r1, r2):
-    r = []
-    if r1[0] >= r2[0]:
-        if r1[0] <= r2[1]:
-            r = (r1[0], r2[1])
+(ranges, ids) = read_input()
 
-    return r
-
-q = deque()
-q.append(ranges[0])
-while True:
-    r1 = q.popleft()
-    r2 = q.popleft()
-    r = merge_ranges(r1, r2)
+fresh_ids = get_fresh_ids(ids, ranges)
+print(len(fresh_ids))
